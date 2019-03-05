@@ -1,5 +1,7 @@
 import "package:flutter/material.dart";
 
+import "./product_card.dart";
+
 class Products extends StatelessWidget {
   final List<Map<String, dynamic>> products;
 
@@ -7,31 +9,12 @@ class Products extends StatelessWidget {
     print('[Products Widget] Constructor');
   }
 
-  Widget _buildProductItem(BuildContext context, int index) {
-    return Card(
-      child: Column(
-        children: <Widget>[
-          Image.asset(products[index]['image']),
-          Text(products[index]['title']),
-          ButtonBar(
-            alignment: MainAxisAlignment.center,
-            children: <Widget>[
-              FlatButton(
-                  child: Text('Details'),
-                  onPressed: () => Navigator.pushNamed<bool>(
-                      context, '/product/' + index.toString()))
-            ],
-          )
-        ],
-      ),
-    );
-  }
-
   Widget _buildProductList() {
     Widget productCards;
     if (products.length > 0) {
       productCards = ListView.builder(
-        itemBuilder: _buildProductItem,
+        itemBuilder: (BuildContext context, int index) =>
+            ProductCard(products[index], index),
         itemCount: products.length,
       );
     } else {
