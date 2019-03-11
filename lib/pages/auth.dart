@@ -19,7 +19,7 @@ class _AuthPageState extends State<AuthPage> {
   };
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  _buildBackgroundImage() {
+  DecorationImage _buildBackgroundImage() {
     return DecorationImage(
       fit: BoxFit.cover,
       colorFilter:
@@ -31,10 +31,12 @@ class _AuthPageState extends State<AuthPage> {
   Widget _buildEmailTextField() {
     return TextFormField(
       decoration: InputDecoration(
-          labelText: 'Email', filled: true, fillColor: Colors.white),
+          labelText: 'E-Mail', filled: true, fillColor: Colors.white),
       keyboardType: TextInputType.emailAddress,
       validator: (String value) {
-        if (value.isEmpty || !RegExp(r"[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?").hasMatch(value)) {
+        if (value.isEmpty ||
+            !RegExp(r"[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?")
+                .hasMatch(value)) {
           return 'Please enter a valid email';
         }
       },
@@ -46,9 +48,9 @@ class _AuthPageState extends State<AuthPage> {
 
   Widget _buildPasswordTextField() {
     return TextFormField(
-      obscureText: true,
       decoration: InputDecoration(
           labelText: 'Password', filled: true, fillColor: Colors.white),
+      obscureText: true,
       validator: (String value) {
         if (value.isEmpty || value.length < 6) {
           return 'Password invalid';
@@ -62,13 +64,13 @@ class _AuthPageState extends State<AuthPage> {
 
   Widget _buildAcceptSwitch() {
     return SwitchListTile(
-      title: Text('Accept Terms'),
       value: _formData['acceptTerms'],
       onChanged: (bool value) {
         setState(() {
           _formData['acceptTerms'] = value;
         });
       },
+      title: Text('Accept Terms'),
     );
   }
 
@@ -85,19 +87,19 @@ class _AuthPageState extends State<AuthPage> {
   Widget build(BuildContext context) {
     final double deviceWidth = MediaQuery.of(context).size.width;
     final double targetWidth = deviceWidth > 550.0 ? 500.0 : deviceWidth * 0.95;
-
     return Scaffold(
       appBar: AppBar(
         title: Text('Login'),
       ),
       body: Container(
-        decoration: BoxDecoration(image: _buildBackgroundImage()),
+        decoration: BoxDecoration(
+          image: _buildBackgroundImage(),
+        ),
         padding: EdgeInsets.all(10.0),
         child: Center(
           child: SingleChildScrollView(
             child: Container(
               width: targetWidth,
-              alignment: Alignment.center,
               child: Form(
                 key: _formKey,
                 child: Column(
@@ -111,13 +113,16 @@ class _AuthPageState extends State<AuthPage> {
                     SizedBox(
                       height: 10.0,
                     ),
-                    ScopedModelDescendant<MainModel>(builder: (BuildContext context, Widget child, MainModel model){
-                      return RaisedButton(
-                      child: Text('Login'),
-                      textColor: Colors.white,
-                      onPressed: () => _submitForm(model.login),
-                    );
-                    })
+                    ScopedModelDescendant<MainModel>(
+                      builder: (BuildContext context, Widget child,
+                          MainModel model) {
+                        return RaisedButton(
+                          textColor: Colors.white,
+                          child: Text('LOGIN'),
+                          onPressed: () => _submitForm(model.login),
+                        );
+                      },
+                    ),
                   ],
                 ),
               ),

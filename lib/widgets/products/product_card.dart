@@ -41,17 +41,19 @@ class ProductCard extends StatelessWidget {
               context, '/product/' + productIndex.toString()),
         ),
         ScopedModelDescendant<MainModel>(
-            builder: (BuildContext context, Widget child, MainModel model) {
-          return IconButton(
-              icon: Icon(model.allProducts[productIndex].isFavourite
+          builder: (BuildContext context, Widget child, MainModel model) {
+            return IconButton(
+              icon: Icon(model.allProducts[productIndex].isFavorite
                   ? Icons.favorite
                   : Icons.favorite_border),
               color: Colors.red,
               onPressed: () {
                 model.selectProduct(productIndex);
-                model.toggleProductFavouriteStatus();
-              });
-        }),
+                model.toggleProductFavoriteStatus();
+              },
+            );
+          },
+        ),
       ],
     );
   }
@@ -63,7 +65,7 @@ class ProductCard extends StatelessWidget {
         children: <Widget>[
           Image.asset(product.image),
           _buildTitlePriceRow(),
-          AddressTag('Union Square, San Fran'),
+          AddressTag('Union Square, San Francisco'),
           Text(product.userEmail),
           _buildActionButtons(context)
         ],

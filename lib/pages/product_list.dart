@@ -6,7 +6,7 @@ import './product_edit.dart';
 import '../scoped-models/main.dart';
 
 class ProductListPage extends StatelessWidget {
-Widget _buildEditButton(BuildContext context, int index, MainModel model) {
+  Widget _buildEditButton(BuildContext context, int index, MainModel model) {
     return IconButton(
       icon: Icon(Icons.edit),
       onPressed: () {
@@ -17,9 +17,7 @@ Widget _buildEditButton(BuildContext context, int index, MainModel model) {
               return ProductEditPage();
             },
           ),
-        ).then((_) {
-          model.selectProduct(null);
-        });
+        );
       },
     );
   }
@@ -27,35 +25,42 @@ Widget _buildEditButton(BuildContext context, int index, MainModel model) {
   @override
   Widget build(BuildContext context) {
     return ScopedModelDescendant<MainModel>(
-        builder: (BuildContext context, Widget child, MainModel model) {
-      return ListView.builder(
-        itemBuilder: (BuildContext context, int index) {
-          return Dismissible(
-            key: Key(model.allProducts[index].title),
-            background: Container(color: Colors.red),
-            onDismissed: (DismissDirection direction) {
-              if (direction == DismissDirection.endToStart) {
-                model.selectProduct(index);
-                model.deleteProduct();
-              }
-            },
-            child: Column(
-              children: <Widget>[
-                ListTile(
+      builder: (BuildContext context, Widget child, MainModel model) {
+        return ListView.builder(
+          itemBuilder: (BuildContext context, int index) {
+            return Dismissible(
+              key: Key(model.allProducts[index].title),
+              onDismissed: (DismissDirection direction) {
+                if (direction == DismissDirection.endToStart) {
+                  model.selectProduct(index);
+                  model.deleteProduct();
+                } else if (direction == DismissDirection.startToEnd) {
+                  print('Swiped start to end');
+                } else {
+                  print('Other swiping');
+                }
+              },
+              background: Container(color: Colors.red),
+              child: Column(
+                children: <Widget>[
+                  ListTile(
                     leading: CircleAvatar(
-                      backgroundImage: AssetImage(model.allProducts[index].image),
+                      backgroundImage:
+                          AssetImage(model.allProducts[index].image),
                     ),
                     title: Text(model.allProducts[index].title),
                     subtitle:
                         Text('\$${model.allProducts[index].price.toString()}'),
-                    trailing: _buildEditButton(context, index, model)),
-                Divider()
-              ],
-            ),
-          );
-        },
-        itemCount: model.allProducts.length,
-      );
-    });
+                    trailing: _buildEditButton(context, index, model),
+                  ),
+                  Divider()
+                ],
+              ),
+            );
+          },
+          itemCount: model.allProducts.length,
+        );
+      },
+    );
   }
 }
